@@ -12,7 +12,7 @@ jobs:
     - name: Check and get release version only
       id: get-release-version
       run: |
-        version=$(echo ${steps.get-branch.outputs.branch} | sed -e "s/feature\///g")
+        version=$(echo steps.get-branch.outputs.branch | sed -e "s/feature\///g")
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
