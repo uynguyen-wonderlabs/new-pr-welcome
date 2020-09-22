@@ -11,7 +11,7 @@ jobs:
       id: get-branch
     - name: Check and get release version only
       run: |
-        steps.get-branch.outputs.branch = $(echo ${{steps.get-branch.outputs.branch}}|grep -P '\\d+.\\d+.\\d+' -o)
+        echo ${steps.get-branch.outputs.branch}|grep -P '\\d+.\\d+.\\d+' -o)
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
