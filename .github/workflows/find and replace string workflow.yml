@@ -16,12 +16,13 @@ jobs:
       run: |
         echo steps.get-branch.outputs.branch
         version=$(echo steps.get-branch.outputs.branch | sed -e "s/feature\///g")
+        echo "::set-output name=version::${version}"
         echo version
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: "  spec.version      = \"${{version}}\""
+        replace: "  spec.version      = \"${{steps.get-release-version.outputsversion}}\""
     - name: Commit the updated podspec file
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
