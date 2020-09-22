@@ -12,10 +12,10 @@ jobs:
         replace: "world"
     - name: Commit files # commit the output folder
       run: |
-          git config --local user.email "test@github.com"
-          git config --local user.name "GitHub Action test"
+          git config --local user.email "uy.nguyen@wonderlabs.io"
+          git config --local user.name "Uy Nguyen"
           git add -A
-          git commit -m "Add changes replace hello to world"
+          git commit -m "Upgrade podspec version"
     - name: Push changes # push the output folder to your repo
       uses: ad-m/github-push-action@master
       with:
