@@ -6,10 +6,16 @@ on:
 jobs:
   reitermarkus/automerge@v1.1.3:
     runs-on: ubuntu-latest
+    steps:
+      - uses: reitermarkus/automerge@v1.1.3
   NathanielHill/check-pr-label-action@v4.0.0:
     runs-on: ubuntu-latest
+    steps:
+      - uses: NathanielHill/check-pr-label-action@v4.0.0
   haya14busa/action-update-semver@v1:
     runs-on: ubuntu-latest
+    steps:
+      - uses: haya14busa/action-update-semver@v1
   pr-labeler:
     runs-on: ubuntu-latest
     steps:
