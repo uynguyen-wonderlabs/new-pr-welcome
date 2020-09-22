@@ -36,6 +36,6 @@ jobs:
       if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       uses: ad-m/github-push-action@master
       with:
-          branch: patch-1 #ignore if your branch is master
+          branch: ${{steps.get-branch.outputs.branch}} #ignore if your branch is master
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
