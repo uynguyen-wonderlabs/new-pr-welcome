@@ -7,30 +7,33 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Get branch name
-      uses: uynguyen-wonderlabs/get-branch-name-github-action@v1
+      uses: uynguyen-wonderlabs/get-branch-name-github-action@master
       id: get-branch
     - name: Print branch name
       run: echo "steps.get-branch.outputs.branch"
     - name: Check and get release version only
       id: get-release-version
-      if: ${{steps.get-branch.outputs.is_release_branch == '1'}}
+      if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       run: |
         echo steps.get-branch.outputs.branch
         version=$(echo steps.get-branch.outputs.branch | sed -e "s/release\///g")
         echo "::set-output name=version::${version}"
         echo version
     - name: Find and replace spec version
+      if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: "  spec.version      = \"${{steps.get-release-version.outputsversion}}\""
+        replace: "  spec.version      = \"${{steps.get-branch.outputs.release_version}}\""
     - name: Commit the updated podspec file
+      if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
           git config --local user.name "Uy Nguyen"
           git add -A
           git commit -m "Upgrade podspec version"
     - name: Push changes
+      if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       uses: ad-m/github-push-action@master
       with:
           branch: patch-1 #ignore if your branch is master
