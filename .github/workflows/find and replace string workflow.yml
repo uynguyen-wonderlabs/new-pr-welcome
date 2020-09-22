@@ -13,7 +13,7 @@ jobs:
       id: get-release-version
       if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
       run: |
-        version=$(echo steps.get-branch.outputs.branch | sed -e "s/release\///g")
+        version=$(echo ${steps.get-branch.outputs.branch} | sed -e "s/release\///g")
         echo "::set-output name=version::${version}"
     - name: Find and replace spec version
       if: ${{steps.get-branch.outputs.is_release_branch == 'YES'}}
