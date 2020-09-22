@@ -15,7 +15,7 @@ jobs:
       id: get-release-version
       run: |
         echo steps.get-branch.outputs.branch
-        version=$(echo steps.get-branch.outputs.branch | sed -e "s/feature\///g")
+        version=$(echo steps.get-branch.outputs.branch | sed -e "s/release\///g")
         echo "::set-output name=version::${version}"
         echo version
     - name: Find and replace spec version
