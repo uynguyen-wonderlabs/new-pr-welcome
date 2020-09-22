@@ -9,10 +9,14 @@ jobs:
     - name: Get branch name
       uses: ypicard/get-branch-name-github-action@v1
       id: get-branch
+    - name: Print branch name
+      run: echo steps.get-branch.outputs.branch
     - name: Check and get release version only
       id: get-release-version
       run: |
+        echo steps.get-branch.outputs.branch
         version=$(echo steps.get-branch.outputs.branch | sed -e "s/feature\///g")
+        echo version
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
