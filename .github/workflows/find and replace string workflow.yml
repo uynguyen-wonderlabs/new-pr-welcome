@@ -4,19 +4,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Find and Replace
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Get branch name
+      uses: ypicard/get-branch-name-github-action@v1
+      id: branch_data
+    - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: "  spec.version = \"1.1.7.1\""
-    - name: Commit files # commit the output folder
+        replace: steps.branch_data.name
+    - name: Commit the updated podspec file
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
           git config --local user.name "Uy Nguyen"
           git add -A
           git commit -m "Upgrade podspec version"
-    - name: Push changes # push the output folder to your repo
+    - name: Push changes
       uses: ad-m/github-push-action@master
       with:
           branch: patch-1 #ignore if your branch is master
