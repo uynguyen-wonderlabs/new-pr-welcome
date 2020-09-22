@@ -1,4 +1,4 @@
-// Hello world, hello world
+// Hello world, world world
 
 module.exports = app => {
     app.on('pull_request.opened', receive);
