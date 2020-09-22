@@ -13,7 +13,7 @@ jobs:
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: "  spec.version      = \"${{steps.get-branch.outputs.branch}}\""
+        replace: "  spec.version      = \"${{steps.get-branch.outputs.branch}} ==> ${{steps.get-branch.outputs.tag}}\""
     - name: Commit the updated podspec file
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
