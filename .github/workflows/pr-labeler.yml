@@ -4,6 +4,12 @@ on:
     types: [opened]
 
 jobs:
+  reitermarkus/automerge@v1.1.3:
+    runs-on: ubuntu-latest
+  NathanielHill/check-pr-label-action@v4.0.0:
+    runs-on: ubuntu-latest
+  haya14busa/action-update-semver@v1:
+    runs-on: ubuntu-latest
   pr-labeler:
     runs-on: ubuntu-latest
     steps:
