@@ -13,7 +13,7 @@ jobs:
       run: echo "steps.get-branch.outputs.branch"
     - name: Check and get release version only
       id: get-release-version
-      if: steps.get-branch.outputs.is_release_branch == true
+      if: ${{steps.get-branch.outputs.is_release_branch == '1'}}
       run: |
         echo steps.get-branch.outputs.branch
         version=$(echo steps.get-branch.outputs.branch | sed -e "s/release\///g")
