@@ -10,7 +10,7 @@ jobs:
       uses: ypicard/get-branch-name-github-action@v1
       id: get-branch
     - name: Print branch name
-      run: echo ${steps.get-branch.outputs.branch}
+      run: echo "steps.get-branch.outputs.branch"
     - name: Check and get release version only
       id: get-release-version
       run: |
