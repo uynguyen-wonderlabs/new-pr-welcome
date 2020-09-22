@@ -8,12 +8,12 @@ jobs:
       uses: actions/checkout@master
     - name: Get branch name
       uses: ypicard/get-branch-name-github-action@v1
-      id: branch_data
+      id: get-branch
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: steps.branch_data.name
+        replace: "spec.version = \"${steps.get-branch.outputs.branch}\""
     - name: Commit the updated podspec file
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
