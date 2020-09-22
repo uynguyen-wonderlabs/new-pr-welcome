@@ -10,13 +10,14 @@ jobs:
       uses: ypicard/get-branch-name-github-action@v1
       id: get-branch
     - name: Check and get release version only
+      id: get-release-version
       run: |
-        echo steps.get-branch.outputs.branch|grep -P '\\d+.\\d+.\\d+' -o
+        version=$(echo ${steps.get-branch.outputs.branch} | sed -e "s/refs\/heads\///g")
     - name: Find and replace spec version
       uses: shitiomatic/str-replace@master
       with:
         find: "\\s\\sspec.version\\s*=\\s\"\\d+.\\d+.\\d+\""
-        replace: "  spec.version      = \"${{steps.get-branch.outputs.branch}} ==> ${{steps.get-branch.outputs.tag}}\""
+        replace: "  spec.version      = \"${{steps.get-release-version.outputs.version}}}}\""
     - name: Commit the updated podspec file
       run: |
           git config --local user.email "uy.nguyen@wonderlabs.io"
