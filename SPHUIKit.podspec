@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "SPHUIKit"
-  spec.version      = "1.1.7"
+steps.branch_data.name
   spec.summary      = 'UI kit components'
   spec.description      = <<-DESC
                         A framework for UI kit components
