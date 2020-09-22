@@ -10,3 +10,15 @@ jobs:
       with:
         find: "hello"
         replace: "world"
+    - name: Commit files # commit the output folder
+      run: |
+          git config --local user.email "test@github.com"
+          git config --local user.name "GitHub Action test"
+          git add ./output
+          git commit -m "Add changes"
+    - name: Push changes # push the output folder to your repo
+      uses: ad-m/github-push-action@master
+      with:
+          branch: patch-1 #ignore if your branch is master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
