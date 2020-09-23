@@ -1,4 +1,4 @@
-# new-pr-welcome hi there world my name is Uy. This is a test commit for testing the github action
+# new-pr-welcome
 
 > a GitHub App built with [probot](https://github.com/probot/probot) that welcomes new users when they open their first pull request. You can use this welcome message to provide links to resources like the contributing guidelines, code of conduct, etc. It should be located in a `.github/config.yml`
 
