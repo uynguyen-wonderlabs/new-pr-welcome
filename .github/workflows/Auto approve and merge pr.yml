@@ -1,9 +1,9 @@
-name: Auto approve
+name: Auto Approve
 
 on:
-  pull_request:
-    branches:
-      - master
+  pull_request
+#     branches:
+#       - master
 
 jobs:
   auto-approve:
