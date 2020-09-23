@@ -15,7 +15,7 @@ jobs:
         id: create_pr
         with:
           committer: uy.nguyen@wonderlabs.io
-          author: dependabot
+          author: dependabot<uy.nguyen@wonderlabs.io>
           branch: ${{github.ref}}
           base: master
       - name: Auto approves
