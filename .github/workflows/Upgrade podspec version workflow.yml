@@ -38,6 +38,17 @@ jobs:
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       uses: ad-m/github-push-action@master
       with:
-          branch: ${{ steps.get-branch.outputs.branch }}
+          branch: "bot/${{ steps.get-branch.outputs.branch }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
+    - name: Create PR to merge into the relase branch
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: gha-utilities/init-pull-request@v0.2.0
+      with:
+          verbose: true
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
+          head: pr-pages
+          base: ${{ steps.get-branch.outputs.branch }}
+          title: "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
+          body: >
+            "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
