@@ -12,7 +12,6 @@ jobs:
           ref: ${{github.ref}}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
-        id: create_pr
         with:
           branch: ${{github.ref}}
           base: master
