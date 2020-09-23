@@ -12,8 +12,23 @@ jobs:
           ref: ${{github.ref}}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
+        id: create_pr
         with:
+          committer: dependabot@sph.com.sg
+          author: Dependabot<dependabot@sph.com.sg>
           branch: ${{github.ref}}
           base: master
-          
+      - name: Auto approve
+        uses: hmarr/auto-approve-action@v2.0.0
+        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Auto merge approved PR
+        uses: reitermarkus/automerge@v1
+        with:
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          merge-method: rebase
+          do-not-merge-labels: never-merge
+          pull-request: ${{ github.event.inputs.pull-request }}
+          dry-run: true
           
