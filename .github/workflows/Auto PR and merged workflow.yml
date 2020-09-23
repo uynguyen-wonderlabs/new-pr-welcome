@@ -4,17 +4,17 @@ on:
     branches:
       - release/2.0.0
 jobs:
-  productionPromotion:
+  Auto PR and merged release branch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Reset promotion branch
         run: |
-          git fetch origin master:master
+          git fetch origin ${github.ref}
           git reset --hard master
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{github.ref}}
+          branch: master
           
           
