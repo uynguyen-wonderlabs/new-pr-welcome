@@ -1,5 +1,9 @@
 name: Find and Replace workflow
-on: [push, pull_request]
+on: 
+  create:
+  push:
+    branches: 
+      - release/*
 jobs:
   build:
     runs-on: ubuntu-latest
