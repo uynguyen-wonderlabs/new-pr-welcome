@@ -16,18 +16,3 @@ jobs:
         with:
           branch: ${{github.ref}}
           base: master
-      - name: Auto approves
-        uses: hmarr/auto-approve-action@v2.0.0
-#         if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          pull_request: ${{ steps.create_pr.output.pull-request-number }}
-      - name: Auto merge approved PR
-        uses: reitermarkus/automerge@v1
-        with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
-          merge-method: rebase
-          do-not-merge-labels: never-merge
-          pull-request: ${{ steps.create_pr.output.pull-request-number }}
-          dry-run: true
-          
