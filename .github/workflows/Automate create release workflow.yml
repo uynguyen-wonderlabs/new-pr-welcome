@@ -30,7 +30,9 @@ jobs:
         
     - name: Print branch name
       run: |
-        echo "The branch ${{ steps.pr_data.outputs.branch }} is is_release_branch = ${{ steps.get-version.outputs.is_release_branch }}"
+        echo "The branch ${{ steps.pr_data.outputs.branch }} have
+         is_release_branch = ${{ steps.get-version.outputs.is_release_branch }}
+         release_version = ${{ steps.get-version.outputs.release_version }}"
       
     - name: Create Release
       if: ${{ steps.get-version.outputs.is_release_branch == 'YES' }}
