@@ -1,0 +1,53 @@
+name: Automate create release tag version workflow
+on: 
+  pull_request:
+    branches: 
+      - master
+    types:
+      - closed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get branch name based on PR
+      uses: andrevalentin/get-branch-name-by-pr@1.0.0
+      id: pr_data
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Print branch name
+      run: |
+        echo "This is PR from branch ${{ steps.pr_data.outputs.branch }}"
+      
+    - name: Checkout PR code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ steps.pr_data.outputs.branch }}
+    
+    - name: Get and check if branch name is an `release/*`
+      uses: uynguyen-wonderlabs/get-branch-name-github-action@master
+      id: get-branch
+      
+    - name: Check and get release version only from branch name
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      id: get-release-version
+      run: |
+        version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
+        echo "::set-output name=new_release_version::${version}"
+        
+    - name: Create Release
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+          tag_name: ${{ steps.get-release-version.outputs.version }}
+          target_commitish: master
+          release_name: Release ${{ steps.get-release-version.outputs.version }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          prerelease: false
