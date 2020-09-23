@@ -1,5 +1,3 @@
-// Hello world, world world
-
 module.exports = app => {
     app.on('pull_request.opened', receive);
     async function receive(context) {
