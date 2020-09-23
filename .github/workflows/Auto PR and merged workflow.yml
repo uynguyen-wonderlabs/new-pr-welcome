@@ -14,8 +14,8 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         id: create_pr
         with:
-          committer: dependabot@sph.com.sg
-          author: Dependabot<dependabot@sph.com.sg>
+          committer: uynguyen-wonderlabs
+          author: Dependabot<uynguyen-wonderlabs@sph.com.sg>
           branch: ${{github.ref}}
           base: master
       - name: Auto approve
