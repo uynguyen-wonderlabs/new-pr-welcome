@@ -19,37 +19,29 @@ jobs:
     - name: Print branch name
       run: |
         echo "This is PR from branch ${{ steps.pr_data.outputs.branch }}"
-      
-    - name: Checkout PR code
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ steps.pr_data.outputs.branch }}
     
-    - name: Get and check if branch name is an `release/*`
-      uses: uynguyen-wonderlabs/get-branch-name-github-action@master
-      id: get-branch
-      
+    - name: Check and get release version if branch name is an `release/*`
+      id: get-version
+      run: |
+        version = $(echo ${{ steps.pr_data.outputs.branch }} | sed -e "s/release\///g")
+        is_release_branch= [version != ${{ steps.pr_data.outputs.branch }}]
+        echo "::set-output name=is_release_branch::${is_release_branch}"
+        echo "::set-output name=release_version::${version}"
+        
     - name: Print branch name
       run: |
-        echo "This is branch ${{ steps.get-branch.outputs.branch }} which was used to check for release"
+        echo "The branch ${{ steps.pr_data.outputs.branch }} is is_release_branch = ${{ steps.get-version.outputs.is_release_branch }}"
       
-    - name: Check and get release version only from branch name
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      id: get-release-version
-      run: |
-        version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
-        echo "::set-output name=new_release_version::${version}"
-        
     - name: Create Release
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      if: ${{ steps.get-version.outputs.is_release_branch == 'YES' }}
       id: create_release
       uses: actions/create-release@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-          tag_name: ${{ steps.get-release-version.outputs.version }}
+          tag_name: ${{ steps.get-version.outputs.release_version }}
           target_commitish: master
-          release_name: Release ${{ steps.get-release-version.outputs.version }}
+          release_name: Release ${{ steps.get-version.outputs.release_version }}
           body: |
             Changes in this Release
             - First Change
