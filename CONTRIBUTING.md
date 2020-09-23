@@ -1,4 +1,4 @@
-## Contributing
+## Contributings
 
 [fork]: https://github.com/behaviorbot/new-pr-welcome/fork
 [pr]: https://github.com/behaviorbot/new-pr-welcome/compare
