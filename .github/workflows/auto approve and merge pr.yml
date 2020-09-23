@@ -14,7 +14,7 @@ jobs:
 #         if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Auto merge approved PR
+      - name: Merge approved PR
         uses: reitermarkus/automerge@v1
         with:
           token: ${{ secrets.MY_GITHUB_TOKEN }}
