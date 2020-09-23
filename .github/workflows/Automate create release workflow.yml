@@ -14,7 +14,7 @@ jobs:
       id: pr_data
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        pr-id: 10
+        pr-id: ${{ github.event.pull_request.number }}
         
     - name: Print branch name
       run: |
