@@ -29,6 +29,10 @@ jobs:
       uses: uynguyen-wonderlabs/get-branch-name-github-action@master
       id: get-branch
       
+    - name: Print branch name
+      run: |
+        echo "This is branch ${{ steps.get-branch.outputs.branch }} which was used to check for release"
+      
     - name: Check and get release version only from branch name
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       id: get-release-version
