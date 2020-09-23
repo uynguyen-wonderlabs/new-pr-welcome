@@ -1,4 +1,4 @@
-name: Automate create release tag version workflow
+name: Auto release tag
 on: 
   pull_request:
     branches: 
