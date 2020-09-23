@@ -24,7 +24,7 @@ jobs:
       id: get-version
       run: |
         version=$(echo ${{ steps.pr_data.outputs.branch }} | sed -e "s/release\///g")
-        if ['release/${{version}}' == ${{ steps.pr_data.outputs.branch }}]; then is_release_branch='YES'; else is_release_branch=NO; fi
+        if ["release/${{version}}" == ${{ steps.pr_data.outputs.branch }}]; then is_release_branch='YES'; else is_release_branch=NO; fi
         echo "::set-output name=is_release_branch::${is_release_branch}"
         echo "::set-output name=release_version::${version}"
         
