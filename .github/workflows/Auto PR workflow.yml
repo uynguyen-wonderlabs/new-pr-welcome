@@ -2,7 +2,7 @@ name: Auto PR
 on:
   push:
     branches:
-      - release/2.0.0
+      - release/*
 jobs:
   AutoPR:
     runs-on: ubuntu-latest
