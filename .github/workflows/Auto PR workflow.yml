@@ -1,4 +1,4 @@
-name: Create production promotion pull request
+name: Auto PR
 on:
   push:
     branches:
