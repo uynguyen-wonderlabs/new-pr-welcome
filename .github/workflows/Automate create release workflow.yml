@@ -1,0 +1,43 @@
+name: Automate create release tag version workflow
+on: create
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      
+    - name: Get and check if branch name is an `release/*`
+      uses: uynguyen-wonderlabs/get-branch-name-github-action@master
+      id: get-branch
+      
+    - name: Check and get release version only
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      id: get-release-version
+      run: |
+        version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
+        echo "::set-output name=new_release_version::${version}"
+        
+    - name: Find and replace the current spec version to new version
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
+        replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
+        include: ".podspec"
+      
+    - name: Commit the updated podspec file
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      run: |
+          git config --local user.email "uy.nguyen@wonderlabs.io"
+          git config --local user.name "Uy Nguyen"
+          git add -A
+          git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
+          
+    - name: Push changes
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: ad-m/github-push-action@master
+      with:
+          branch: ${{ steps.get-branch.outputs.branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
