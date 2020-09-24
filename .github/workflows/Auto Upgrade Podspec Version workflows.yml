@@ -69,4 +69,4 @@ jobs:
       with:
           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
           base: ${{ steps.get-branch.outputs.branch}}
-          delete-branch: true
+          delete-branch: false
