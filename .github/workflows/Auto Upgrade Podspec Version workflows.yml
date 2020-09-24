@@ -55,6 +55,7 @@ jobs:
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
           git status
+          git push
         
 #     - name: Checkout bot branch
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
@@ -63,14 +64,14 @@ jobs:
 #         ref: ${{ steps.create_bot_branch.outputs.bot_branch }}
           
           
-    - name: Push changes
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: ad-m/github-push-action@master
-      with:
-          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
-          directory: ./
+#     - name: Push changes
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       uses: ad-m/github-push-action@master
+#       with:
+#           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           force: true
+#           directory: ./
       
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
