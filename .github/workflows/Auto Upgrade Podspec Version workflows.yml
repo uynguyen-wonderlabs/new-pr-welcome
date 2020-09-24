@@ -42,13 +42,19 @@ jobs:
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
           
-    - name: Push changes
+    - uses: actions-go/push@master
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: ad-m/github-push-action@master
       with:
-          branch: ${{ steps.create_branch.outputs.bot_branch }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
+        commit-message: '[Auto] update pre-puilt dist packages'
+        remote: origin
+      
+#     - name: Push changes
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       uses: ad-m/github-push-action@master
+#       with:
+#           branch: ${{ steps.create_branch.outputs.bot_branch }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           force: true
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
