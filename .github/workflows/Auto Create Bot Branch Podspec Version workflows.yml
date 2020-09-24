@@ -1,4 +1,4 @@
-name: Auto Upgrade Podspec Version
+name: Auto Create Bot Branch
 on: create
 jobs:
   build:
@@ -26,36 +26,36 @@ jobs:
           echo "::set-output name=bot_branch::${bot_branch}"
           git checkout -b ${bot_branch}
           
-#     - name: Push bot branch
-#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-#       uses: ad-m/github-push-action@master
-#       with:
-#           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           force: true
+    - name: Push bot branch
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: ad-m/github-push-action@master
+      with:
+          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
           
 #     - name: Checkout bot branch
 #       uses: actions/checkout@master
 #       with:
 #         ref: ${{ steps.create_bot_branch.outputs.bot_branch }}
           
-    - name: Find and replace the current spec version to new version
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: shitiomatic/str-replace@master
-      with:
-        find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
-        replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
-        include: ".podspec"
+#     - name: Find and replace the current spec version to new version
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       uses: shitiomatic/str-replace@master
+#       with:
+#         find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
+#         replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
+#         include: ".podspec"
            
-    - name: Commit the updated podspec file
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      run: |
-          git config --local user.email "uy.nguyen@wonderlabs.io"
-          git config --local user.name "Uy Nguyen"
-          git add -A
-          git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
-          git push --set-upstream origin ${{ steps.create_bot_branch.outputs.bot_branch }}
-          git status
+#     - name: Commit the updated podspec file
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       run: |
+#           git config --local user.email "uy.nguyen@wonderlabs.io"
+#           git config --local user.name "Uy Nguyen"
+#           git add -A
+#           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
+#           git push --set-upstream origin ${{ steps.create_bot_branch.outputs.bot_branch }}
+#           git status
         
 #     - name: Checkout bot branch
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
@@ -73,9 +73,9 @@ jobs:
 #           force: true
 #           directory: ./
       
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
-          base: ${{ steps.get-branch.outputs.branch}}
-          delete-branch: false
+#     - name: Create Pull Request
+#       uses: peter-evans/create-pull-request@v3
+#       with:
+#           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
+#           base: ${{ steps.get-branch.outputs.branch}}
+#           delete-branch: false
