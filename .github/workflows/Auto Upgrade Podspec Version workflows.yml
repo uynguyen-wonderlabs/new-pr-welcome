@@ -1,4 +1,4 @@
-name: Auto Create Bot Branch
+name: Auto Upgrade Podspec Version
 on: 
   create
      branches:
@@ -21,15 +21,8 @@ jobs:
       run: |
         version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
         echo "::set-output name=new_release_version::${version}"
-        
-    - name: Create bot branch
-      if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
-      id: create_bot_branch
-      run: |
-          bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
-          echo "::set-output name=bot_branch::${bot_branch}"
-          git checkout -b ${bot_branch}
-          
+        echo ${version}
+
     - name: Find and replace the current spec version to new version
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       uses: shitiomatic/str-replace@master
@@ -45,14 +38,13 @@ jobs:
           git config --local user.name "Uy Nguyen"
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
-          git push --set-upstream origin ${{ steps.create_bot_branch.outputs.bot_branch }}
           git status
           
     - name: Push changes
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       uses: ad-m/github-push-action@master
       with:
-          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
+          branch: ${{ github.ref }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           directory: .
@@ -60,6 +52,6 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
-          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
-          base: ${{ steps.get-branch.outputs.branch}}
+          branch: ${{ github.ref }}
+          base: release/${{ steps.get-release-version.outputs.new_release_version }}
           delete-branch: false
