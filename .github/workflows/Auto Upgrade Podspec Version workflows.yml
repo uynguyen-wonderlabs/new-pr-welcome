@@ -18,14 +18,6 @@ jobs:
         version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
         echo "::set-output name=new_release_version::${version}"
         
-    - name: Find and replace the current spec version to new version
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: shitiomatic/str-replace@master
-      with:
-        find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
-        replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
-        include: ".podspec"
-        
     - name: Create bot branch
       if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
       id: create_branch
@@ -34,6 +26,22 @@ jobs:
           echo "::set-output name=bot_branch::${bot_branch}"
           git checkout -b ${bot_branch}
           
+    - name: Push bot branch
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: ad-m/github-push-action@master
+      with:
+          branch: ${{ steps.create_branch.outputs.bot_branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+          
+    - name: Find and replace the current spec version to new version
+      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
+        replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
+        include: ".podspec"
+           
     - name: Commit the updated podspec file
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       run: |
@@ -42,22 +50,22 @@ jobs:
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
           
-    - uses: actions-go/push@master
+    - name: Push changes
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+      uses: ad-m/github-push-action@master
       with:
-        commit-message: '[Auto] update pre-puilt dist packages'
-        remote: origin
-        ref: ${{ steps.create_branch.outputs.bot_branch }}
-        remote-ref: ${{ steps.create_branch.outputs.bot_branch }} 
+          branch: ${{ steps.create_branch.outputs.bot_branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
       
-#     - name: Push changes
+#     - uses: actions-go/push@master
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-#       uses: ad-m/github-push-action@master
 #       with:
-#           branch: ${{ steps.create_branch.outputs.bot_branch }}
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           force: true
-
+#         commit-message: '[Auto] update pre-puilt dist packages'
+#         remote: origin
+#         ref: ${{ steps.create_branch.outputs.bot_branch }}
+#         remote-ref: ${{ steps.create_branch.outputs.bot_branch }} 
+      
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
