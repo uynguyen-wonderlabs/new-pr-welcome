@@ -1,4 +1,4 @@
-name: Auto Approve and Merge
+name: Auto Merge
 
 on:
   pull_request
@@ -6,7 +6,7 @@ on:
        - master
 
 jobs:
-  auto-approve:
+  auto-merge:
     runs-on: ubuntu-latest
     steps:
       - name: Merge approved PR
