@@ -11,6 +11,14 @@ jobs:
       uses: uynguyen-wonderlabs/get-branch-name-github-action@master
       id: get-branch
       
+    - name: Create bot branch
+      if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
+      id: create_branch
+      run: |
+          bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
+          echo "::set-output name=bot_branch::${bot_branch}"
+          git checkout -b ${bot_branch}
+          
     - name: Check and get release version only
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       id: get-release-version
@@ -25,7 +33,7 @@ jobs:
         find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
         replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
         include: ".podspec"
-      
+        
     - name: Commit the updated podspec file
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       run: |
@@ -38,6 +46,12 @@ jobs:
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       uses: ad-m/github-push-action@master
       with:
-          branch: ${{ steps.get-branch.outputs.branch }}
+          branch: ${{ steps.create_branch.outputs.bot_branch }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+          branch: ${{ steps.create_branch.outputs.bot_branch }}
+          base: ${{ steps.get-branch.outputs.branch}}
