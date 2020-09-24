@@ -55,14 +55,16 @@ jobs:
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
           git status
+          remote_repo="https://${secrets.GITHUB_ACTOR}:${secrets.GITHUB_TOKEN}@github.com/${secrets.GITHUB_REPOSITORY}.git"
+          git push "${remote_repo}" HEAD:${{ steps.create_bot_branch.outputs.bot_branch }} --follow-tags --force;
           
-    - name: Push changes
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: ad-m/github-push-action@master
-      with:
-          branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
+#     - name: Push changes
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       uses: ad-m/github-push-action@master
+#       with:
+#           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           force: true
       
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
