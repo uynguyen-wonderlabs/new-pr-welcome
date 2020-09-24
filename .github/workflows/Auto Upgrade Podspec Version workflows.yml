@@ -76,7 +76,7 @@ jobs:
           
     - name: Push changes
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: uynguyen-wonderlabs/github-push-action@master
+      uses: ad-m/github-push-action@master
       with:
           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
