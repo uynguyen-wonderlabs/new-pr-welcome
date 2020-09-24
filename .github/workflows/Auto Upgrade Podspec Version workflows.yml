@@ -54,7 +54,7 @@ jobs:
           git config --local user.name "Uy Nguyen"
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
-          git push       
+          git push --set-upstream origin ${{ steps.create_bot_branch.outputs.bot_branch }}
           git status
         
 #     - name: Checkout bot branch
