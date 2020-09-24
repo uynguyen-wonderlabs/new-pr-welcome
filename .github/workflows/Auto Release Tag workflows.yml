@@ -1,4 +1,4 @@
-name: Auto release tag
+name: Auto Release Tag
 on: 
   pull_request:
     branches: 
