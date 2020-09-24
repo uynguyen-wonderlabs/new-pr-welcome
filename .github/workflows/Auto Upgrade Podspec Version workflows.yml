@@ -47,6 +47,8 @@ jobs:
       with:
         commit-message: '[Auto] update pre-puilt dist packages'
         remote: origin
+        ref: ${{ steps.create_branch.outputs.bot_branch }}
+        remote-ref: ${{ steps.create_branch.outputs.bot_branch }} 
       
 #     - name: Push changes
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
