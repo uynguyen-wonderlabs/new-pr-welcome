@@ -46,17 +46,6 @@ jobs:
         find: "\\t*spec.version\\s*=\\s\"[\\S]*\""
         replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
         include: ".podspec"
-        
-#     - uses: gr2m/create-or-update-pull-request-action@v1.x
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#         title: "My pull request title"
-#         body: "My pull request body"
-#         branch: "my-pull-request-base-branch"
-#         author: "Lorem J. Ipsum <lorem@example.com>"
-#         path: "."
-#         commit-message: "build: cache"
            
     - name: Commit the updated podspec file
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
@@ -67,11 +56,11 @@ jobs:
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
           git status
         
-    - name: Checkout bot branch
-      if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
-      uses: actions/checkout@master
-      with:
-        ref: ${{ steps.create_bot_branch.outputs.bot_branch }}
+#     - name: Checkout bot branch
+#       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
+#       uses: actions/checkout@master
+#       with:
+#         ref: ${{ steps.create_bot_branch.outputs.bot_branch }}
           
           
     - name: Push changes
@@ -81,6 +70,7 @@ jobs:
           branch: ${{ steps.create_bot_branch.outputs.bot_branch }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
+          directory: ./
       
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
