@@ -18,13 +18,13 @@ jobs:
         version=$(echo ${{ steps.get-branch.outputs.branch }} | sed -e "s/release\///g")
         echo "::set-output name=new_release_version::${version}"
         
-#     - name: Create bot branch
-#       if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
-#       id: create_bot_branch
-#       run: |
-#           bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
-#           echo "::set-output name=bot_branch::${bot_branch}"
-#           git checkout -b ${bot_branch}
+    - name: Create bot branch
+      if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
+      id: create_bot_branch
+      run: |
+          bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
+          echo "::set-output name=bot_branch::${bot_branch}"
+          git checkout -b ${bot_branch}
           
 #     - name: Push bot branch
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
@@ -54,8 +54,8 @@ jobs:
           git config --local user.name "Uy Nguyen"
           git add -A
           git commit -m "Upgrade podspec version to ${{ steps.get-release-version.outputs.new_release_version }}"
+          git push       
           git status
-          git push
         
 #     - name: Checkout bot branch
 #       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
