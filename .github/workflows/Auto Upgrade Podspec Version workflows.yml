@@ -1,4 +1,4 @@
-name: Upgrade podspec version workflow
+name: Auto Upgrade Podspec Version
 on: create
 jobs:
   build:
