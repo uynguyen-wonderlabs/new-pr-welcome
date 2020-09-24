@@ -10,15 +10,7 @@ jobs:
     - name: Get and check if branch name is an `release/*`
       uses: uynguyen-wonderlabs/get-branch-name-github-action@master
       id: get-branch
-      
-    - name: Create bot branch
-      if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
-      id: create_branch
-      run: |
-          bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
-          echo "::set-output name=bot_branch::${bot_branch}"
-          git checkout -b ${bot_branch}
-          
+        
     - name: Check and get release version only
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       id: get-release-version
@@ -34,6 +26,14 @@ jobs:
         replace: "spec.version      = \"${{ steps.get-release-version.outputs.new_release_version }}\""
         include: ".podspec"
         
+    - name: Create bot branch
+      if: ${{ steps.get-branch.outputs.is_release_branch =='YES' }}
+      id: create_branch
+      run: |
+          bot_branch="bot/${{ steps.get-branch.outputs.branch }}"
+          echo "::set-output name=bot_branch::${bot_branch}"
+          git checkout -b ${bot_branch}
+          
     - name: Commit the updated podspec file
       if: ${{ steps.get-branch.outputs.is_release_branch == 'YES' }}
       run: |
