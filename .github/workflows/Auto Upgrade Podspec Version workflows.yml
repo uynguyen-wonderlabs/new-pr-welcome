@@ -1,6 +1,8 @@
 name: Auto Upgrade Podspec Version
 on: 
-  create
+  create:
+    branches:
+      - release/*
 
 jobs:
   build:
