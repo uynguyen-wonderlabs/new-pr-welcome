@@ -20,7 +20,7 @@ jobs:
       run: |
         echo "This is PR from branch ${{ steps.pr_data.outputs.branch }}"
     
-    - name: Check and get release version if branch name is an `release/*`
+    - name: Test Check and get release version if branch name is an `release/*`
       id: get-version
       run: |
         branch="${{steps.pr_data.outputs.branch}}"
