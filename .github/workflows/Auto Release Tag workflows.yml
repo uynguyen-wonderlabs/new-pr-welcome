@@ -23,7 +23,7 @@ jobs:
     - name: Check and get release version if branch name is an `release/*`
       id: get-version
       run: |
-        branch=${{steps.pr_data.outputs.branch}}
+        branch=${steps.pr_data.outputs.branch}
         version=$(echo ${{branch}} | sed -e "s/release\///g")
         is_release_branch="NO"
         if ["release/${version}" == ${branch} ]; then is_release_branch="YES"; fi
