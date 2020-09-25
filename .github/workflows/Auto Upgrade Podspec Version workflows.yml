@@ -51,5 +51,5 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
           branch: ${{ github.ref }}
-          base: release/${{ steps.get-release-version.outputs.new_release_version }}
+          base: master
           delete-branch: false
