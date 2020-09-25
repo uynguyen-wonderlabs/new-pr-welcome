@@ -57,6 +57,5 @@ jobs:
           commitish: master
           body: |
             ${{ steps.get_changelog.outputs.changelog }}
-            - Second Change
           draft: false
           prerelease: false
