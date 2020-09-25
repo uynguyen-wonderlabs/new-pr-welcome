@@ -44,8 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
           tag_name: ${{ steps.get-version.outputs.release_version }}
-          target_commitish: master
           release_name: Release ${{ steps.get-version.outputs.release_version }}
+          commitish: master
           body: |
             Changes in this Release
             - First Change
