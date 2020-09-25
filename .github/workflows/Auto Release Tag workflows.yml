@@ -59,3 +59,10 @@ jobs:
             ${{ steps.get_changelog.outputs.changelog }}
           draft: false
           prerelease: false
+          
+    - name: Push the new spec into private specs
+      run: |
+         REPO_NAME=${ github.event.repository.name }
+         SOURCE_URL="git@github.com:${{ REPO_NAME }}.git"
+         pod repo add ${REPO_NAME} ${SOURCE_URL}
+         pod repo add ${REPO_NAME} https://github.com/SPHTech/Specs.git
