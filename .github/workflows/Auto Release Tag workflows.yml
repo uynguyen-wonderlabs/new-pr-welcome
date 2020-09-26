@@ -59,13 +59,3 @@ jobs:
             ${{ steps.get_changelog.outputs.changelog }}
           draft: false
           prerelease: false
-    
-    - name: Install Cocoapods
-      run: gem install cocoapods
-          
-    - name: Push the new spec into private specs
-      run: |
-         REPO_NAME="Temp"
-         SOURCE_URL="git@github.com:${{ github.repository }}.git"
-         pod repo add ${{github.repository}} ${SOURCE_URL}
-         pod repo add ${{github.repository}} https://github.com/SPHTech/Specs.git
